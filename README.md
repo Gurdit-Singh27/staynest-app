@@ -22,3 +22,11 @@ A full-stack Airbnb-like listing platform where users can browse, create and rev
 ## Status
 
 🚧 In active development.
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Copy `.env.example` to `.env` and fill in your values
+4. Seed sample data: `node init/index.js`
+5. Start the server: `node app.js`
