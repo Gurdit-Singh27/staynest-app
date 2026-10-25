@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const ExpressError = require("./utils/ExpressError.js");
+
+const listingRouter = require("./routes/listing.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 
@@ -31,7 +34,18 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.get("/", (req, res) => {
-  res.send("Welcome to StayNest");
+  res.redirect("/listings");
+});
+
+app.use("/listings", listingRouter);
+
+app.all("/*splat", (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found"));
+});
+
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message = "Something went wrong" } = err;
+  res.status(statusCode).render("error.ejs", { message });
 });
 
 app.listen(8080, () => {
